@@ -1,0 +1,65 @@
+[project]
+name = "rmk"
+version = "0.1.0"
+description = "Root Monkey (rmk) is an autonomous AI Agent system."
+readme = "README.md"
+authors = [
+    { name = "rootmq", email = "mqvvang@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.52.0",
+    "dotenv>=0.9.9",
+    "litellm>=1.72.0",
+    "openai>=1.82.0",
+    "pydantic>=2.11.5",
+    "rich>=14.0.0",
+]
+
+[project.scripts]
+rmk = "rmonkey.entrypoints.cli.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rmonkey"]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "isort>=6.0.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.11.11",
+]
+
+[tool.ruff]
+line-length = 119
+fix = true
+target-version = "py310"
+
+[tool.ruff.format]
+quote-style = "preserve"
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
