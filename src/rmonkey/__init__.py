@@ -3,7 +3,7 @@ from rmonkey.agents import AskAgent, RootMonkey, SWEAgent
 from rmonkey.memory import Memory
 from rmonkey.utils.schema import Message, Role
 
-__version__ = "0.1.0.dev"
+__version__ = "0.1.0"
 
 __all__ = [
     "Role",

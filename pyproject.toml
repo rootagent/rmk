@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "rootmq", email = "mqvvang@gmail.com" }
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "anthropic>=0.52.0",
     "dotenv>=0.9.9",
@@ -15,6 +15,10 @@ dependencies = [
     "pydantic>=2.11.5",
     "rich>=14.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/rootagent"
+Repository = "https://github.com/rootagent/rmk"
 
 [project.scripts]
 rmk = "rmonkey.entrypoints.cli.main:main"
