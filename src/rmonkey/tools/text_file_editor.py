@@ -6,7 +6,7 @@ from ._base import Tool
 _description = """
 Text file tool for viewing, creating and editing.
 
-* view will return the content of a file, optionally within a specified line range. Each line is prefixed with its line number to help with navigation.
+* view will return the content of a file, optionally within a specified line range.
 * create will create a new file with the specified content.
 * edit will apply diff edits to an existing file.
 
@@ -57,6 +57,11 @@ class TextFileEditor(Tool):
                 "type": "array",
                 "items": {"type": "integer"},
             },
+            "line_number": {
+                "description": "If True, line numbers will be displayed for each line. Optional for 'view'.",
+                "type": "boolean",
+                "default": False,
+            }
         },
         "required": ["operation", "path"],
     }
@@ -70,14 +75,15 @@ class TextFileEditor(Tool):
             return self.view(path, view_range)
         elif operation == "create":
             content = kwargs.get("content")
-            return self.create(path, content)
+            line_number = kwargs.get("line_number", False)
+            return self.create(path, content, line_number)
         elif operation == "edit":
             diff = kwargs.get("diff")
             return self.edit(path, diff)
         else:
             return f"{self.name}: {operation} is unsupported."
 
-    def view(self, path: str, view_range: list[int] = None) -> str:
+    def view(self, path: str, view_range: list[int] = None, line_number: bool = False) -> str:
         _path = Path(path)
         if not _path.exists():
             return f"{self.name}: File not found: {path}"
@@ -88,10 +94,13 @@ class TextFileEditor(Tool):
             _lines = file_content.splitlines()
             if not _lines:
                 return ""
-            max_line_num = len(_lines)
-            width = len(str(max_line_num))
-
-            lines = [f"{i:>{width}} {line}" for i, line in enumerate(_lines, start=1)]
+            
+            if line_number:
+                max_line_num = len(_lines)
+                width = len(str(max_line_num))
+                lines = [f"{i:>{width}} {line}" for i, line in enumerate(_lines, start=1)]
+            else:
+                lines = _lines
             if not view_range:
                 return "\n".join(lines)
             else:
