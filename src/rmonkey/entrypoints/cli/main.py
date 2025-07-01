@@ -68,6 +68,13 @@ def main():
     console = PrettyConsole()
     session_id = generate_session_id()
     verbose = args.verbose
+
+    def get_task_from_arg(task_arg):
+        if task_arg and os.path.isfile(task_arg):
+            with open(task_arg, 'r', encoding='utf-8') as f:
+                return f.read().strip()
+        return task_arg
+
     if args.mode == "ask":
         agent = AskAgent()
         while True:
@@ -87,7 +94,7 @@ def main():
                 return
     elif args.mode == "agent":
         agent = SWEAgent()
-        input_task = args.task
+        input_task = get_task_from_arg(args.task)
         while True:
             try:
                 if not input_task:
@@ -111,7 +118,7 @@ def main():
         if user_rules_ctx:
             system_ctx = f"{system_ctx}\n{user_rules_ctx}"
         agent = RootMonkey(system_rules=system_ctx, session_id=session_id, verbose=verbose, console=console)
-        input_task = args.task
+        input_task = get_task_from_arg(args.task)
         try:
             if not input_task:
                 while True:
